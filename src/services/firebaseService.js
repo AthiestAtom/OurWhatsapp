@@ -4,7 +4,7 @@ import { getAuth, signInWithPhoneNumber, PhoneAuthProvider, RecaptchaVerifier } 
 
 // Firebase configuration - Production environment variables with fallback
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "AIzaSyD-YbIrV64jRsMNYxVXc6Fyz9ygXItCy8Y",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "YOUR_FIREBASE_API_KEY",
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "ourwhatsapp-44d4b.firebaseapp.com",
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "ourwhatsapp-44d4b",
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "ourwhatsapp-44d4b.firebasestorage.app",
