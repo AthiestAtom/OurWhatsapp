@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "OurWhatsApp Frontend - React.js Web App",
   "main": "src/index.js",
-  "homepage": "https://yourusername.github.io/OurWhatsapp-main",
+  "homepage": "https://athiestatom.github.io/OurWhatsApp",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
