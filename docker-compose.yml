@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: whatsapp-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: whatsapp-clone
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - whatsapp-network
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: whatsapp-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --requirepass redis123
+    volumes:
+      - redis_data:/data
+    networks:
+      - whatsapp-network
+
+volumes:
+  mongodb_data:
+  redis_data:
+
+networks:
+  whatsapp-network:
+    driver: bridge
