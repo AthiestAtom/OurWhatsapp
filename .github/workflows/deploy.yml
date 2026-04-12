@@ -27,6 +27,11 @@ jobs:
         with:
           node-version: '18'
           
+      - name: Debug - List files
+        run: |
+          ls -la
+          pwd
+          
       - name: Install dependencies
         run: |
           npm install
