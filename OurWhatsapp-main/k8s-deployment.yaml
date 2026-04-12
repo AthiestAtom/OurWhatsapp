@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whatsapp-backend
+  labels:
+    app: whatsapp-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: whatsapp-backend
+  template:
+    metadata:
+      labels:
+        app: whatsapp-backend
+    spec:
+      containers:
+      - name: whatsapp-backend
+        image: whatsapp-backend:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: MONGODB_URI
+          valueFrom:
+            secretKeyRef:
+              name: whatsapp-secrets
+              key: mongodb-uri
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: whatsapp-secrets
+              key: redis-url
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: whatsapp-secrets
+              key: jwt-secret
+        - name: ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: whatsapp-secrets
+              key: encryption-key
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whatsapp-backend-service
+spec:
+  selector:
+    app: whatsapp-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: whatsapp-secrets
+type: Opaque
+data:
+  # Base64 encoded values - replace with your actual secrets
+  mongodb-uri: bW9bZ29kYi8vYWRtaW46cGFzc3dvcmQxMjNAvJ2hhdHNhcHNfY2xvbmU/YXV0aFNvdXJjZT1hZG1pbj==
+  redis-url: cmVkaXM6Ly9yZWRpcy1Bhc3N3b3JkQHJlZGlzOjYzNzk=
+  jwt-secret: eW91ci1zdXBlci1zZWN1cmUand3Qand0LWtleS1jaGFuZ2UtdGhpcw==
+  encryption-key: eW91ci0zMi1jaGFyYWN0ZXItZW5jcnlwdGlvbi1rZXktMTIzNA==
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: whatsapp-backend-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: whatsapp-backend
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
