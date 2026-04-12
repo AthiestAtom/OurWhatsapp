@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd frontend
-          npm ci
+          npm install
           
       - name: Build React app
         run: |
@@ -49,6 +49,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./frontend/build
+          base-path: /OurWhatsApp/
 
   deploy:
     environment:
