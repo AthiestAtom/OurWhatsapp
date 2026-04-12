@@ -65,14 +65,15 @@ function App() {
 
   if (loading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
-        bgcolor="#ECE5DD"
-      >
-        <div>Loading...</div>
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontSize: '18px',
+        color: '#333'
+      }}>
+        Loading WhatsApp Clone...
       </Box>
     );
   }
