@@ -29,12 +29,10 @@ jobs:
           
       - name: Install dependencies
         run: |
-          cd frontend
           npm install
           
       - name: Build React app
         run: |
-          cd frontend
           npm run build
         env:
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
@@ -48,7 +46,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./frontend/build
+          path: ./build
 
   deploy:
     environment:
