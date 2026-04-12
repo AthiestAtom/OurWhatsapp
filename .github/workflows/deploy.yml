@@ -49,7 +49,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./frontend/build
-          base-path: /OurWhatsApp/
 
   deploy:
     environment:
